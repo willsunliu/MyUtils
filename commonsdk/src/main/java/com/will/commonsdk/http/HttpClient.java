@@ -1,12 +1,14 @@
 package com.will.commonsdk.http;
 
+import com.will.commonsdk.http.listener.HttpResponseListener;
+import com.will.commonsdk.http.response.HttpJsonCallback;
+
 import java.util.concurrent.TimeUnit;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
 
 import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 
@@ -37,9 +39,9 @@ public class HttpClient {
         mHttpClient = builder.build();
     }
 
-    public static Call get(Request request, Callback callback) {
+    public static Call get(Request request, HttpResponseListener listener) {
         Call call = mHttpClient.newCall(request);
-        call.enqueue(callback);
+        call.enqueue(new HttpJsonCallback(listener));
         return call;
     }
 }
